@@ -1,3 +1,4 @@
+
 package com.example.study.model.entity;
 
 import lombok.AllArgsConstructor;
@@ -38,8 +39,6 @@ public class User {
     private LocalDateTime updatedAt;
 
     private String updatedBy;
-//
-//// 1 : N
-//   @OneToMany(fetch = FetchType.LAZY , mappedBy = "user")
-//   private List<OrderDetail> orderDetailList;
+
+
 }

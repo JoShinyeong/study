@@ -1,5 +1,10 @@
 package com.example.study.model.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,6 +35,8 @@ public class OrderGroup {
 
     private String revAddress;
 
+    private String revName;
+
     private String paymentType; // 카드 / 현금
 
     private BigDecimal totalPrice;
@@ -49,6 +56,5 @@ public class OrderGroup {
     private String updatedBy;
 
     private Long userId;
-
 
 }

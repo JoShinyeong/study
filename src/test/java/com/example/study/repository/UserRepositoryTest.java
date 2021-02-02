@@ -8,7 +8,7 @@ import com.example.study.model.entity.Item;
 import com.example.study.model.entity.OrderDetail;
 import com.example.study.model.entity.User;
 
-import org.junit.Assert;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -31,27 +31,27 @@ public class UserRepositoryTest extends StudyApplicationTests {
     @Test
     public void create() {
 
-    String account="Test01";
-    String password="Test01";
-    String status ="REGISTERED";
-    String email= "TEST01@gmail.com";
-    String phoneNumber ="010-1111-2222";
-    LocalDateTime registeredAt=LocalDateTime.now();
-    LocalDateTime createdAt= LocalDateTime.now();
-    String createdBy = "AdminSever";
+        String account="Test01";
+        String password="Test01";
+        String status ="REGISTERED";
+        String email= "TEST01@gmail.com";
+        String phoneNumber ="010-1111-2222";
+        LocalDateTime registeredAt=LocalDateTime.now();
+        LocalDateTime createdAt= LocalDateTime.now();
+        String createdBy = "AdminSever";
 
-    User user = new User();
-    user.setAccount(account);
-    user.setPassword(password);
-    user.setStatus(status);
-    user.setEmail(email);
-    user.setPhoneNumber(phoneNumber);
-    user.setRegisteredAt(registeredAt);
-    user.setCreatedAt(createdAt);
-    user.setCreatedBy(createdBy);
+        User user = new User();
+        user.setAccount(account);
+        user.setPassword(password);
+        user.setStatus(status);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setRegisteredAt(registeredAt);
+        user.setCreatedAt(createdAt);
+        user.setCreatedBy(createdBy);
 
-    User newUser= userRepository.save(user);
-    Assertions.assertNotNull(newUser);
+        User newUser= userRepository.save(user);
+        Assertions.assertNotNull(newUser);
 
 
     }
@@ -60,7 +60,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
 
     public void read() {
 
-      User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
+        User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
         Assertions.assertNotNull(user);
     }
 
