@@ -31,11 +31,11 @@ public class UserRepositoryTest extends StudyApplicationTests {
     @Test
     public void create() {
 
-        String account="Test01";
-        String password="Test01";
+        String account="Test03";
+        String password="Test03";
         String status ="REGISTERED";
         String email= "TEST01@gmail.com";
-        String phoneNumber ="010-1111-2222";
+        String phoneNumber ="010-1111-3333";
         LocalDateTime registeredAt=LocalDateTime.now();
         LocalDateTime createdAt= LocalDateTime.now();
         String createdBy = "AdminSever";
@@ -47,8 +47,7 @@ public class UserRepositoryTest extends StudyApplicationTests {
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         user.setRegisteredAt(registeredAt);
-        user.setCreatedAt(createdAt);
-        user.setCreatedBy(createdBy);
+
 
         User newUser= userRepository.save(user);
         Assertions.assertNotNull(newUser);
@@ -63,17 +62,20 @@ public class UserRepositoryTest extends StudyApplicationTests {
         User user = userRepository.findFirstByPhoneNumberOrderByIdDesc("010-1111-2222");
         if(user != null) {
             user.getOrderGroupList().stream().forEach(orderGroup -> {
-                System.out.println("------------------주문자--------------");
+                System.out.println("------------------주문묶음--------------");
                 System.out.println("수령인 : " + orderGroup.getRevName());
                 System.out.println("수령지 : " + orderGroup.getRevAddress());
                 System.out.println("총금액 : " + orderGroup.getTotalPrice());
                 System.out.println("총수량 : " + orderGroup.getTotalQuantity());
 
-
+                System.out.println("------------------주문상태--------------");
                 orderGroup.getOrderDetailList().stream().forEach(orderDetail ->{
-                    System.out.println("------------------주문상태--------------");
-                    System.out.println("주문상태" + orderDetail.getStatus());
-                    System.out.println("도착예정일자" + orderDetail.getArrivalDate());
+                    System.out.println("파트너사 이름 : "+ orderDetail.getItem().getPartner().getName());
+                    System.out.println("파트너사 카테고리 : " + orderDetail.getItem().getPartner().getCategory().getTitle());
+                    System.out.println("주문상품 :" + orderDetail.getItem().getName());
+                    System.out.println("고객센터 번호 :" + orderDetail.getItem().getPartner().getCallCenter());
+                    System.out.println("주문상태 :" + orderDetail.getStatus());
+                    System.out.println("도착예정일자 : " + orderDetail.getArrivalDate());
                         }
                 );
 
