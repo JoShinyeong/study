@@ -12,64 +12,73 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemApiResponse> {
+public class ItemApiLogicService extends BaseService<ItemApiRequest, ItemApiResponse, Item>  {
 
     @Autowired
     private PartnerRepository partnerRepository;
 
-    @Autowired
-    private ItemRepository itemRepository;
 
     @Override
     public Header<ItemApiResponse> create(Header<ItemApiRequest> request) {
 
+        return Optional.ofNullable(request.getData())
+                .map(body ->{
+                    Item item = Item.builder()
+                            .status(body.getStatus())
+                            .name(body.getName())
+                            .title(body.getTitle())
+                            .content(body.getContent())
+                            .price(body.getPrice())
+                            .brandName(body.getBrandName())
+                            .registeredAt(LocalDateTime.now())
+                            .partner(partnerRepository.getOne(body.getPartnerId()))
+                            .build();
 
-        ItemApiRequest body = request.getData();
-
-        Item item = Item.builder()
-                .status(body.getStatus())
-                .name(body.getName())
-                .title(body.getTitle())
-                .content(body.getContent())
-                .price(body.getPrice())
-                .brandName(body.getBrandName())
-                .registeredAt(LocalDateTime.now())
-                .partner(partnerRepository.getOne(body.getPartnerId()))
-                .build();
-
-        Item newItem = itemRepository.save(item);
-        return response(newItem);
+                    return item;
+                })
+                .map(newItem -> baseRepository.save(newItem))
+                .map(newItem -> response(newItem))
+                .orElseGet(()->Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
                 .map(item -> response(item))
                 .orElseGet(()-> Header.ERROR("데이터 없음"));
     }
 
     @Override
     public Header<ItemApiResponse> update(Header<ItemApiRequest> request) {
-        ItemApiRequest boby = request.getData();
-        return itemRepository.findById(boby.getId())
-                .map(entityItem ->{
-                    entityItem
-                            .setStatus(boby.getStatus())
-                            .setName(boby.getName())
-                            .setTitle(boby.getName())
-                            .setContent(boby.getContent())
-                            .setPrice(boby.getPrice())
-                            .setBrandName(boby.getBrandName())
-                            .setRegisteredAt(boby.getRegisteredAt())
-                            .setUnregisteredAt(boby.getUnregisteredAt())
-                            ;
-                    return  entityItem;
+        return Optional.ofNullable(request.getData())
+                .map(body ->{
+                    return baseRepository.findById(body.getId());
                 })
-                .map(newEntityItem -> itemRepository.save(newEntityItem))
-                .map(item -> response(item))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(item -> {
+
+                    ItemApiRequest body = request.getData();
+                    item.setStatus(body.getStatus())
+                            .setTitle(body.getTitle())
+                            .setContent(body.getContent())
+                            .setName(body.getName())
+                            .setPrice(body.getPrice())
+                            .setBrandName(body.getBrandName())
+                            .setPartner(partnerRepository.getOne(body.getPartnerId()))
+                            .setStatus(body.getStatus())
+                            .setRegisteredAt(body.getRegisteredAt())
+                            .setUnregisteredAt(body.getUnregisteredAt())
+                    ;
+                    return item;
+
+                })
+                .map(changeItem -> baseRepository.save(changeItem))
+                .map(newItem -> response(newItem))
                 .orElseGet(()->Header.ERROR("데이터 없음"));
 
     }
@@ -77,9 +86,9 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
     @Override
     public Header delete(Long id) {
 
-        return itemRepository.findById(id)
+        return baseRepository.findById(id)
                 .map(item -> {
-                    itemRepository.delete(item);
+                    baseRepository.delete(item);
                     return Header.OK();
                 })
                 .orElseGet(()->Header.ERROR("데이터 없음"));
