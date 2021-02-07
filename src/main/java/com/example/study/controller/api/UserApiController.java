@@ -22,7 +22,7 @@ public class UserApiController implements CrudInterface <UserApiRequest, UserApi
 
 
     @Override
-    @RequestMapping("") // /api/user
+    @PostMapping("")  // /api/user
     public Header<UserApiResponse> create(@RequestBody Header<UserApiRequest> request) {
         log.info("{}",request);
         return userApiLogicService.create(request);

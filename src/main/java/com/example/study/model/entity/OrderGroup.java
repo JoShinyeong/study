@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.example.study.model.enumclass.OrderType;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.apache.tomcat.jni.Local;
@@ -34,9 +35,10 @@ public class OrderGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String Status;
+    private String status;
 
-    private String orderType; // 주문의 형태 - 일괄 / 개별
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType;   // 주문의 형태 - 일괄 / 개별
 
     private String revAddress;
 

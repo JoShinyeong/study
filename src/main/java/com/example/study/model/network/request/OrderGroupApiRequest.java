@@ -1,6 +1,10 @@
 package com.example.study.model.network.request;
 
-import lombok.*;
+import com.example.study.model.enumclass.OrderType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,7 +19,7 @@ public class OrderGroupApiRequest {
 
         private String status;
 
-        private String orderType;
+        private OrderType orderType;
 
         private String revAddress;
 
@@ -32,9 +36,5 @@ public class OrderGroupApiRequest {
         private LocalDateTime arrivalDate;
 
         private Long userId;
-
-
-
-
 
 }
