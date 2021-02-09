@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collector;
 
 @Data
 @AllArgsConstructor
@@ -34,4 +36,5 @@ public class ItemApiResponse {
     private LocalDateTime unregisteredAt;
 
     private Long partnerId;
+
 }
